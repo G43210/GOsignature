@@ -256,7 +256,7 @@
 
     btnCopy.addEventListener('click', function() {
         const range = document.createRange();
-        range.selectNode(previewBox);
+        range.selectNodeContents(previewBox);
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
         document.execCommand('copy');
