@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GatherOne签名生成</title>
+    <style>
+        * {
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #FAFBFF;
+            color: #000000;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .full-screen-wrapper {
+            width: 100%;
+            max-width: 1300px;
+            padding: 60px 40px;
+        }
+        
+        .header {
+            margin-bottom: 50px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 38px;
+            font-weight: 300;
+            letter-spacing: -1.5px;
+            color: #000000;
+            line-height: 1.1;
+        }
+        .steps {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: -40px;
+            margin-bottom: 50px;
+        }
+        
+        .main-layout {
+            display: flex;
+            flex-direction: row;
+            gap: 80px;
+        }
+        
+        .form-area {
+            width: 380px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        label {
+            display: block;
+            font-size: 13px;
+            color: #111111;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0px;
+            color: #000000;
+            font-size: 14px;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #000000;
+        }
+        
+        .btn-copy {
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 0px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .preview-box {
+            background: transparent;
+            border: 1px solid #000000;
+            border-radius: 0px;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 520px;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827;
+            color: #ffffff;
+            padding: 14px 35px;
+            font-weight: 600;
+            font-size: 14px;
+            display: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="full-screen-wrapper">
+    <div class="header">
+        <h1>GatherOne签名生成</h1>
+    </div>
+    <div class="steps">1. 填写信息 &nbsp;→&nbsp; 2. 确认并复制 &nbsp;→&nbsp; 3. 粘贴到邮箱签名</div>
+
+    <div class="main-layout">
+        <div class="form-area">
+            <div class="form-group"><label>姓名</label><input type="text" id="input-name" placeholder="姓名"></div>
+            <div class="form-group"><label>职位</label><input type="text" id="input-title" placeholder="职位"></div>
+            <div class="form-group"><label>电话</label><input type="text" id="input-tel" placeholder="电话"></div>
+            <div class="form-group"><label>微信</label><input type="text" id="input-wechat" placeholder="微信"></div>
+            <button class="btn-copy" id="btn-copy-id">确认并复制</button>
+        </div>
+        
+        <div class="preview-area">
+            <div class="preview-title" style="font-size: 13px; color: #111111; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">预览</div>
+            <div class="preview-box" id="copy-target"></div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast-msg">已复制</div>
+
+<script>
+    const nameInput = document.getElementById('input-name');
+    const titleInput = document.getElementById('input-title');
+    const telInput = document.getElementById('input-tel');
+    const wechatInput = document.getElementById('input-wechat');
+    const previewBox = document.getElementById('copy-target');
+    const btnCopy = document.getElementById('btn-copy-id');
+
+    const baseUrl = "https://cdn.jsdelivr.net/gh/G43210/GOsignature@main/signature/assets";
+    const logoUrl = baseUrl + "/image_1.png";
+    const partner1Url = baseUrl + "/image_2.png";
+    const partner2Url = baseUrl + "/image_3.png";
+
+    function render() {
+        const name = nameInput.value || "姓名";
+        const title = titleInput.value || "职位";
+        const tel = telInput.value || "电话";
+        const wechat = wechatInput.value || "微信";
+
+        previewBox.innerHTML = `
+            <table cellpadding="0" cellspacing="0" border="0" width="680" style="width: 680px; background-color: #ffffff; color: rgba(0,203,212,1); font-family: 'Microsoft YaHei', '微软雅黑', sans-serif; border-collapse: collapse;">
+              <tr>
+                <td valign="top" style="padding: 0; padding-bottom: 24px;">
+                  <img src="${logoUrl}" width="165" height="24" style="display: block; width: 165px; height: 24px; margin-left: 1px;" />
+                  <div style="margin-top: 4px; margin-left: 1px; color: rgba(0,203,212,1); font-size: 20px;">企业全球业务增长的首席营销官</div>
+                  <div style="width: 69px; background-color: rgba(128,134,139,1); height: 1px; margin-top: 18px; margin-left: 1px;">&nbsp;</div>
+                  <div style="margin-top: 12px; margin-left: 1px; color: rgba(0,203,212,1); font-size: 20px;">${name}&nbsp;|&nbsp;${title}</div>
+                  <table cellpadding="0" cellspacing="0" border="0" style="margin-top: 12px; margin-left: 1px; font-size: 20px; color: rgba(0,203,212,1);">
+                    <tr><td style="width: 75px;">TEL</td><td><a href="tel:${tel}" style="color:rgb(0,203,212); text-decoration:none;">${tel}</a></td></tr>
+                    <tr><td style="width: 75px;">Wechat</td><td><a href="tel:${wechat}" style="color:rgb(0,203,212); text-decoration:none;">${wechat}</a></td></tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" style="padding: 0; font-size: 0; line-height: 0; height: 13px;">
+                  <table cellpadding="0" cellspacing="0" border="0" width="85%" style="width: 85%; height: 13px;">
+                    <tr>
+                      <td height="13" style="background-color: rgba(255,138,197,1);"></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" style="background-color: rgba(136,123,255,1); width: 100%; padding: 0;">
+                  <table cellpadding="0" cellspacing="0" border="0" width="85%" style="width: 85%; background-color: rgba(0,203,212,1);">
+                    <tr>
+                      <td valign="top" style="padding: 12px 13px 8px 13px;">
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="width: 100%;">
+                          <tr>
+                            <td valign="middle" style="width: 130px; font-size: 14px; color: #ffffff; padding: 0;">战略合作伙伴</td>
+                            <td valign="middle" style="padding: 0;"><img src="${partner1Url}" style="display: block; width: 100%; height: auto;" /></td>
+                          </tr>
+                          <tr>
+                            <td valign="middle" style="width: 130px; font-size: 14px; color: #ffffff; padding: 4px 0 0 0;">全球合作伙伴</td>
+                            <td valign="middle" style="padding: 4px 0 0 0;"><img src="${partner2Url}" style="display: block; width: 100%; height: auto;" /></td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  <div style="padding: 24px 13px 0 13px;">
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="width: 100%; table-layout: fixed;">
+                      <tr>
+                        <td valign="top" style="width: 33.33%; padding: 0 10px 22px 0; font-size: 13px; color: #ffffff;">
+                          <div style="font-size: 14px; margin-bottom: 3px;">北京</div>
+                          <div style="opacity: 0.9; line-height: 1.4;">北京市 朝阳区<br>管庄路150号院东方华瑞C座9层</div>
+                        </td>
+                        <td valign="top" style="width: 33.33%; padding: 0 10px 22px 10px; font-size: 13px; color: #ffffff;">
+                          <div style="font-size: 14px; margin-bottom: 3px;">杭州</div>
+                          <div style="opacity: 0.9; line-height: 1.4;">浙江省 杭州市 西湖区<br>华星时代广场A座903</div>
+                        </td>
+                        <td valign="top" style="width: 33.33%; padding: 0 0 22px 10px; font-size: 13px; color: #ffffff;">
+                          <div style="font-size: 14px; margin-bottom: 3px;">长沙</div>
+                          <div style="opacity: 0.9; line-height: 1.4;">湖南省 长沙市<br>保利国际广场B3栋1613</div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="width: 33.33%; padding: 0 10px 0 0; font-size: 13px; color: #ffffff;">
+                          <div style="font-size: 14px; margin-bottom: 3px;">深圳</div>
+                          <div style="opacity: 0.9; line-height: 1.4;">广东省 深圳市 南山区<br>华润置地大厦D座6层162</div>
+                        </td>
+                        <td valign="top" style="width: 33.33%; padding: 0 10px 0 10px; font-size: 13px; color: #ffffff;">
+                          <div style="font-size: 14px; margin-bottom: 3px;">合肥</div>
+                          <div style="opacity: 0.9; line-height: 1.4;">安徽省 合肥市 蜀山区<br>潜山路华邦世贸中心B座603室</div>
+                        </td>
+                        <td valign="top" style="width: 33.33%; padding: 0 0 0 10px; font-size: 13px; color: #ffffff;">
+                          <div style="font-size: 14px; margin-bottom: 3px;">香港</div>
+                          <div style="opacity: 0.9; line-height: 1.4;">香港金鐘金鐘道<br>95號統一中心29層A20室</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div style="padding: 22px 13px 13px 13px; font-size: 14px; color: #ffffff;">
+                    <a href="tel:400-988-5518" style="color: #ffffff; text-decoration: none;">400-988-5518</a>
+                  </div>
+                </td>
+              </tr>
+            </table>
+        `;
+    }
+
+    [nameInput, titleInput, telInput, wechatInput].forEach(el => el.addEventListener('input', render));
+
+    btnCopy.addEventListener('click', function() {
+        const range = document.createRange();
+        range.selectNode(previewBox);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        const toast = document.getElementById('toast-msg');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        window.getSelection().removeAllRanges();
+    });
+
+    render();
+</script>
+</body>
+</html>
