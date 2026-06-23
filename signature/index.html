@@ -180,75 +180,37 @@
         const wechat = wechatInput.value || "微信";
 
         previewBox.innerHTML = `
-            <table width="600" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-family:'HONOR Sans CN','Microsoft YaHei',sans-serif;background:none;background-color:transparent;">
-              <tr>
-                <td style="padding:0;vertical-align:bottom;width:312px;">
-                  <table cellpadding="0" cellspacing="0" border="0" style="width:100%;">
-                    <tr>
-                      <td style="padding:0;vertical-align:bottom;">
-                        <span style="font-size:20px;color:#00CAD3;font-weight:300;white-space:nowrap;">${name}</span><span style="margin-left:8px;font-size:14px;color:#00CAD3;font-weight:300;white-space:nowrap;">&nbsp;${title}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding-top:4px;">
-                        <span style="font-size:12px;color:#9F9F9F;font-weight:300;">电话&nbsp;${tel}</span><span style="margin-left:8px;font-size:12px;color:#9F9F9F;font-weight:300;">&nbsp;微信&nbsp;${wechat}</span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-                <td style="padding:0;vertical-align:bottom;width:288px;text-align:right;">
-                  <span style="font-size:14.17px;color:#00CAD3;font-weight:300;white-space:nowrap;">400-988-5518</span>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding:8px 0 0 0;">
-                  <table width="600" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-                    <tr>
-                      <td width="480" height="4" style="background:#00CBD4;font-size:0;line-height:0;">&nbsp;</td>
-                      <td width="80" height="4" style="background:#FF8AC5;font-size:0;line-height:0;">&nbsp;</td>
-                      <td width="40" height="4" style="background:#887BFF;font-size:0;line-height:0;">&nbsp;</td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding:24px 0 0 0;">
-                  <img src="${addrBannerUrl}" width="600" height="16" style="display:block;width:600px;height:auto;" />
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding:8px 0 0 0;font-size:12px;color:#9F9F9F;line-height:14px;font-weight:300;">
-                  北京：北京市朝阳区管庄路150号院东方华瑞C座9层<br>
-                  杭州：浙江省杭州市西湖区华星时代广场A座903<br>
-                  长沙：湖南省长沙市保利国际广场B3栋1613<br>
-                  深圳：广东省深圳市南山区华润置地大厦D座6层162<br>
-                  合肥：安徽省合肥市蜀山区潜山路华邦世贸中心B座603<br>
-                  香港：香港金鐘金鐘道95號統一中心29層A20室
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding:24px 0 0 0;">
-                  <table width="600" cellpadding="0" cellspacing="0" border="0" style="border-radius:4px;background:#00CAD3;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;">
-                    <tr>
-                      <td style="padding:8px 16px;">
-                        <table width="568" cellpadding="0" cellspacing="0" border="0" align="center" style="border-collapse:collapse;">
-                          <tr>
-                            <td align="center" style="padding:0;">
-                              <span style="font-size:12px;color:#fff;font-weight:300;white-space:nowrap;">战略合作伙伴</span><img src="${partner1Url}" width="400" height="19" style="display:inline-block;width:400px;height:auto;vertical-align:middle;margin-left:24px;" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td align="center" style="padding:8px 0 0 0;">
-                              <span style="font-size:12px;color:#fff;font-weight:300;white-space:nowrap;">全球合作伙伴</span><img src="${partner2Url}" width="400" height="19" style="display:inline-block;width:400px;height:auto;vertical-align:middle;margin-left:24px;" />
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
+<div style="width:600px;font-family:'HONOR Sans CN','Microsoft YaHei',sans-serif;">
+  <div style="width:600px;position:relative;">
+    <div style="width:312px;">
+      <div><span style="color:#00cad3;font-size:20pt;font-weight:300;">${name}</span><span style="color:#00cad3;font-size:12pt;font-weight:300;">&nbsp;&nbsp;${title}</span></div>
+      <div style="margin-top:4px;"><span style="color:#9f9f9f;font-size:10pt;font-weight:300;">电话&nbsp;${tel}</span><span style="color:#9f9f9f;font-size:10pt;font-weight:300;">&nbsp;&nbsp;微信&nbsp;${wechat}</span></div>
+    </div>
+    <div style="position:absolute;right:0;bottom:0;color:#00cad3;font-size:10.5pt;font-weight:300;white-space:nowrap;">400-988-5518</div>
+  </div>
+  <div style="margin-top:8px;font-size:0;line-height:0;">
+    <div style="display:inline-block;width:480px;height:4px;background:#00CBD4;"></div><div style="display:inline-block;width:80px;height:4px;background:#FF8AC5;"></div><div style="display:inline-block;width:40px;height:4px;background:#887BFF;"></div>
+  </div>
+  <div style="margin-top:24px;">
+    <img src="${addrBannerUrl}" width="600" style="display:block;width:600px;height:auto;border:0;" />
+  </div>
+  <div style="margin-top:8px;">
+    <div style="color:#9f9f9f;font-size:10pt;font-weight:300;line-height:1.7;">北京：北京市朝阳区管庄路150号院东方华瑞C座9层</div>
+    <div style="color:#9f9f9f;font-size:10pt;font-weight:300;line-height:1.7;">杭州：浙江省杭州市西湖区华星时代广场A座903</div>
+    <div style="color:#9f9f9f;font-size:10pt;font-weight:300;line-height:1.7;">长沙：湖南省长沙市保利国际广场B3栋1613</div>
+    <div style="color:#9f9f9f;font-size:10pt;font-weight:300;line-height:1.7;">深圳：广东省深圳市南山区华润置地大厦D座6层162</div>
+    <div style="color:#9f9f9f;font-size:10pt;font-weight:300;line-height:1.7;">合肥：安徽省合肥市蜀山区潜山路华邦世贸中心B座603</div>
+    <div style="color:#9f9f9f;font-size:10pt;font-weight:300;line-height:1.7;">香港：香港金鐘金鐘道95號統一中心29層A20室</div>
+  </div>
+  <div style="margin-top:24px;background:#00cad3;border-radius:4px;padding:8px 16px;">
+    <div style="text-align:center;">
+      <span style="color:#fff;font-size:12pt;font-weight:300;white-space:nowrap;">战略合作伙伴</span><img src="${partner1Url}" width="400" style="display:inline-block;width:400px;height:auto;vertical-align:middle;margin-left:24px;border:0;" />
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <span style="color:#fff;font-size:12pt;font-weight:300;white-space:nowrap;">全球合作伙伴</span><img src="${partner2Url}" width="400" style="display:inline-block;width:400px;height:auto;vertical-align:middle;margin-left:24px;border:0;" />
+    </div>
+  </div>
+</div>
         `;
     }
 
