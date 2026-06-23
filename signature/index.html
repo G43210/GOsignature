@@ -140,7 +140,7 @@
     <div class="header">
         <h1>GatherOne签名生成</h1>
     </div>
-    <div class="steps">1. 填写信息 &nbsp;→&nbsp; 2. 确认并复制 &nbsp;→&nbsp; 3. 粘贴到邮箱签名</div>
+    <div class="steps">1. 填写信息 &nbsp;→&nbsp; 2. 复制HTML代码 &nbsp;→&nbsp; 3. 粘贴到邮件 <b>&lt;/&gt;</b> 源代码编辑器</div>
 
     <div class="main-layout">
         <div class="form-area">
@@ -217,15 +217,27 @@
     [nameInput, titleInput, telInput, wechatInput].forEach(el => el.addEventListener('input', render));
 
     btnCopy.addEventListener('click', function() {
-        const range = document.createRange();
-        range.selectNodeContents(previewBox);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand('copy');
-        const toast = document.getElementById('toast-msg');
-        toast.style.display = 'block';
-        setTimeout(() => { toast.style.display = 'none'; }, 2000);
-        window.getSelection().removeAllRanges();
+        const htmlCode = previewBox.innerHTML;
+        navigator.clipboard.writeText(htmlCode).then(() => {
+            const toast = document.getElementById('toast-msg');
+            toast.textContent = 'HTML代码已复制，粘贴到邮件</>代码编辑器';
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }).catch(() => {
+            // fallback for older browsers
+            const textarea = document.createElement('textarea');
+            textarea.value = htmlCode;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            const toast = document.getElementById('toast-msg');
+            toast.textContent = 'HTML代码已复制，粘贴到邮件</>代码编辑器';
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        });
     });
 
     render();
