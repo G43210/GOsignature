@@ -214,28 +214,39 @@
 
     [nameInput, titleInput, telInput, wechatInput].forEach(el => el.addEventListener('input', render));
 
+    function showToast(msg) {
+        const toast = document.getElementById('toast-msg');
+        toast.textContent = msg;
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+
+    function fallbackCopy(text) {
+        // 兜底：本地 file:// 打开或旧浏览器，navigator.clipboard 不可用时使用
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(textarea);
+    }
+
     btnCopy.addEventListener('click', function() {
         const htmlCode = previewBox.innerHTML;
-        navigator.clipboard.writeText(htmlCode).then(() => {
-            const toast = document.getElementById('toast-msg');
-            toast.textContent = 'HTML代码已复制，粘贴到邮件</>代码编辑器';
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
-        }).catch(() => {
-            // fallback for older browsers
-            const textarea = document.createElement('textarea');
-            textarea.value = htmlCode;
-            textarea.style.position = 'fixed';
-            textarea.style.left = '-9999px';
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            const toast = document.getElementById('toast-msg');
-            toast.textContent = 'HTML代码已复制，粘贴到邮件</>代码编辑器';
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
-        });
+        const okMsg = 'HTML代码已复制，粘贴到邮件</>代码编辑器';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(htmlCode).then(function() {
+                showToast(okMsg);
+            }).catch(function() {
+                fallbackCopy(htmlCode);
+                showToast(okMsg);
+            });
+        } else {
+            fallbackCopy(htmlCode);
+            showToast(okMsg);
+        }
     });
 
     render();
